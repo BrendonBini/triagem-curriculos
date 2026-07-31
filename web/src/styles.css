@@ -1,0 +1,852 @@
+:root {
+  /* Design tokens */
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-2: #1e222b;
+  --border: #2a2f3a;
+  --text: #e7e9ee;
+  --text-dim: #9aa2b1;
+  --accent: #6c8cff;
+  --accent-dim: #3a4a8c;
+  --strong: #2ecc71;
+  --medium: #f1c40f;
+  --weak: #e74c3c;
+  --danger: #ff6b6b;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+header.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+header.app-header h1 { font-size: 22px; margin: 0; }
+header.app-header .sub { color: var(--text-dim); font-size: 13px; margin-top: 2px; }
+
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.badge.ok { color: var(--strong); border-color: var(--strong); }
+.badge.warn { color: var(--medium); border-color: var(--medium); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.grid { display: grid; gap: 20px; }
+.grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.grid.main { grid-template-columns: 1.4fr 1fr; align-items: start; }
+@media (max-width: 900px) {
+  .grid.cols-2, .grid.main { grid-template-columns: 1fr; }
+}
+
+/* Upload */
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+  transition: border-color .15s, background .15s;
+  background: var(--surface-2);
+}
+.dropzone.drag { border-color: var(--accent); background: rgba(108,140,255,.08); }
+.dropzone p { margin: 6px 0; color: var(--text-dim); }
+.file-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 4px; }
+.field input, .field textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 8px 10px;
+  font-family: inherit;
+}
+
+.btn {
+  background: var(--accent);
+  color: #0b0e14;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-weight: 600;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn.ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+.toolbar input, .toolbar select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 8px 10px;
+}
+.spacer { flex: 1; }
+
+/* Candidate list */
+table.candidates { width: 100%; border-collapse: collapse; }
+table.candidates th, table.candidates td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+table.candidates th { color: var(--text-dim); font-weight: 500; cursor: pointer; user-select: none; }
+table.candidates tr { cursor: pointer; }
+table.candidates tr:hover td { background: var(--surface-2); }
+table.candidates tr.selected td { background: rgba(108,140,255,.1); }
+
+.score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.score-pill::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+.tier-strong { color: var(--strong); background: rgba(46,204,113,.12); }
+.tier-strong::before { background: var(--strong); }
+.tier-medium { color: var(--medium); background: rgba(241,196,15,.12); }
+.tier-medium::before { background: var(--medium); }
+.tier-weak { color: var(--weak); background: rgba(231,76,60,.12); }
+.tier-weak::before { background: var(--weak); }
+
+.chip {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  margin: 2px 4px 2px 0;
+}
+.chip.flag { color: var(--danger); border-color: var(--danger); }
+.chip.review { color: var(--medium); border-color: var(--medium); }
+
+/* Detail */
+.detail h2 { margin: 0 0 2px; font-size: 20px; }
+.detail .muted { color: var(--text-dim); font-size: 13px; }
+.section-title { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-dim); margin: 18px 0 8px; }
+.kv { display: flex; gap: 8px; font-size: 14px; padding: 3px 0; }
+.kv .k { color: var(--text-dim); min-width: 90px; }
+.bullet-list { margin: 0; padding-left: 18px; }
+.bullet-list li { margin: 4px 0; }
+.role-item { border-left: 2px solid var(--border); padding: 2px 0 8px 12px; margin-bottom: 6px; }
+.role-item .role-title { font-weight: 600; }
+.role-item .role-meta { color: var(--text-dim); font-size: 13px; }
+
+.empty, .loading {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 48px 20px;
+}
+.spinner {
+  width: 28px; height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-banner {
+  background: rgba(231,76,60,.12);
+  border: 1px solid var(--weak);
+  color: #ffb3ab;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.warn-banner {
+  background: rgba(241,196,15,.1);
+  border: 1px solid var(--medium);
+  color: #f7e08a;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.results-summary { font-size: 14px; margin: 10px 0; }
+.results-summary .fail { color: var(--danger); }
+
+/* ===== Organização por vagas ===== */
+
+/* 1. Barra de abas */
+.vaga-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vaga-tabs__scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;              /* permite encolher e ativar o scroll */
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  padding-bottom: 2px;       /* espaço para a scrollbar não cobrir o underline */
+}
+.vaga-tabs__scroll::-webkit-scrollbar { height: 6px; }
+.vaga-tabs__scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.vaga-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;            /* não encolhe: rola em vez de truncar */
+  white-space: nowrap;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-bottom: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.vaga-tab:hover {
+  color: var(--text);
+  border-color: var(--accent-dim);
+}
+.vaga-tab.active {
+  color: var(--text);
+  background: rgba(108, 140, 255, .14);
+  border-color: var(--accent);
+  border-bottom-color: var(--accent);  /* reforço não só por cor */
+  font-weight: 600;
+}
+.vaga-tab:focus-visible,
+.vaga-tab--new:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* badge de contagem dentro da aba */
+.vaga-tab .count {
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.vaga-tab.active .count {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* botão "+ Nova vaga" */
+.vaga-tab--new {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--accent);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: border-color .15s;
+}
+.vaga-tab--new:hover { border-color: var(--accent); }
+
+/* 2. Sub-header da vaga ativa */
+.vaga-subheader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.vaga-subheader__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.vaga-subheader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.vaga-subheader__meta {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.vaga-subheader__actions {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* 3. Botões de ação */
+.btn.danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.btn.danger:hover:not(:disabled) {
+  background: rgba(255, 107, 107, .12);
+}
+.btn.sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.detail-actions select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+/* 4. Estado arquivado */
+.chip.archived {
+  color: var(--text-dim);
+  border-color: var(--border);
+  background: var(--surface-2);
+}
+table.candidates tr.archived td { opacity: .55; }
+table.candidates tr.archived:hover td,
+table.candidates tr.archived.selected td { opacity: 1; }
+
+/* ===================================================================
+   REDESIGN — Tema claro amigável + multi-tela (cola no FINAL do arquivo)
+   Sobrescreve o :root escuro e as regras com hex fixo por vir depois.
+   =================================================================== */
+
+/* ---- 1. Tokens (tema claro) ---- */
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --border: #d7dde7;
+  --text: #1c2430;
+  --text-dim: #5b6675;
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --accent-dim: #93b4ff;
+  --accent-soft: #e8f0ff;
+  --strong: #15803d;
+  --strong-dot: #16a34a;
+  --medium: #b45309;
+  --medium-dot: #f59e0b;
+  --weak: #b91c1c;
+  --weak-dot: #ef4444;
+  --danger: #dc2626;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .10);
+  --shadow-md: 0 6px 18px rgba(16, 24, 40, .12);
+}
+
+/* ---- 2. Base tipográfica maior + foco global ---- */
+body { font-size: 16px; line-height: 1.55; }
+header.app-header h1 { font-size: 26px; }
+header.app-header .sub { font-size: 14px; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card { box-shadow: var(--shadow); }
+
+/* ---- 3. Botões (hierarquia + tema claro) ---- */
+.btn {
+  background: var(--accent);
+  color: #ffffff;                 /* era #0b0e14 (escuro) */
+  border: 1px solid transparent;
+  padding: 11px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+.btn:hover:not(:disabled) { background: var(--accent-dark); }
+.btn.ghost {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn.ghost:hover:not(:disabled) {
+  border-color: var(--accent-dim);
+  background: var(--accent-soft);
+}
+.btn.lg {
+  padding: 14px 22px;
+  font-size: 16px;
+  border-radius: var(--radius);
+  min-height: 48px;
+}
+.btn.sm { padding: 8px 12px; font-size: 14px; }
+.btn.block { width: 100%; }
+.btn.danger {
+  background: var(--surface);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.btn.danger:hover:not(:disabled) { background: rgba(220, 38, 38, .08); }
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 4px 4px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-back:hover { color: var(--accent); }
+
+/* link discreto (ver requisitos da vaga) */
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+.btn-link:hover { color: var(--accent-dark); text-decoration: underline; }
+
+/* ---- 4. Inputs / selects / textarea (claros, alvo 44px) ---- */
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.field input,
+.field textarea,
+.field select,
+.toolbar input,
+.toolbar select,
+.detail-actions select {
+  background: var(--surface);     /* branco, não --bg cinza */
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 16px;
+  padding: 11px 12px;
+  min-height: 44px;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--text-dim); }
+.field select,
+.toolbar select,
+.detail-actions select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235b6675' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.field select { width: 100%; }
+.field-hint { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+/* toolbar: rótulos inline (nota mín., checkboxes) */
+.toolbar__inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.toolbar__inline input[type="number"] { min-height: 40px; padding: 8px 10px; }
+
+/* linha de arquivo escolhido no upload */
+.file-remove {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+.file-remove:hover { color: var(--danger); }
+
+/* ---- 5. Score pills / chips de status (tema claro) ---- */
+.score-pill::before { background: currentColor; }
+.tier-strong { color: var(--strong); background: #e7f6ec; }
+.tier-strong::before { background: var(--strong-dot); }
+.tier-medium { color: var(--medium); background: #fdf0d9; }
+.tier-medium::before { background: var(--medium-dot); }
+.tier-weak { color: var(--weak); background: #fdeaea; }
+.tier-weak::before { background: var(--weak-dot); }
+
+.chip.flag { color: var(--weak); border-color: var(--weak); }
+.chip.review { color: var(--medium); border-color: var(--medium); }
+.chip.open { color: var(--strong); border-color: var(--strong); background: #e7f6ec; }
+.chip.closed { color: var(--text-dim); border-color: var(--border); background: var(--surface-2); }
+
+/* Banners: texto escuro legível sobre fundo claro (eram claros p/ dark) */
+.error-banner {
+  background: #fdecec;
+  border-color: var(--weak);
+  color: #7f1d1d;
+}
+.warn-banner {
+  background: #fdf4e3;
+  border-color: var(--medium);
+  color: #7c4a02;
+}
+
+/* ---- 6. Tela "Vagas" (home): grade + cards ---- */
+.vagas-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.vagas-shortcuts {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.vaga-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+  text-align: left;
+}
+.vaga-card:hover,
+.vaga-card:focus-visible {
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-dim);
+  transform: translateY(-1px);
+}
+.vaga-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.vaga-card__title { font-size: 18px; font-weight: 700; color: var(--text); }
+.vaga-card__meta { font-size: 14px; color: var(--text-dim); }
+.vaga-card__type { margin: 2px 0 4px; }
+.vaga-card__stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.vaga-card__stat { display: flex; flex-direction: column; }
+.vaga-card__stat .num { font-size: 28px; font-weight: 700; line-height: 1; color: var(--text); }
+.vaga-card__stat .lbl { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
+
+/* card "Nova vaga" */
+.vaga-card--new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 150px;
+  background: transparent;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.vaga-card--new .plus { font-size: 28px; line-height: 1; }
+.vaga-card--new:hover,
+.vaga-card--new:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ---- 7. Tela "dentro da vaga": header + CTA ---- */
+.vaga-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  margin: 8px 0 20px;
+}
+.vaga-header__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.vaga-header__top h2 { margin: 0; font-size: 24px; font-weight: 700; }
+.vaga-header__meta { font-size: 15px; color: var(--text-dim); margin-top: 4px; }
+.vaga-header__desc { font-size: 15px; color: var(--text); margin-top: 8px; max-width: 70ch; }
+.vaga-header__cta { margin-top: 16px; display: flex; }
+.vaga-header__cta .btn.lg { min-width: 260px; }
+
+/* ---- 8. Formulário de vaga expandido ---- */
+.vaga-form .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 16px;
+}
+.vaga-form .field { margin-bottom: 0; }
+.field--full { grid-column: 1 / -1; }
+.field textarea.description { min-height: 120px; resize: vertical; line-height: 1.5; }
+.field input.openings { max-width: 120px; }
+.vaga-form__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+@media (max-width: 640px) {
+  .vaga-form .form-grid { grid-template-columns: 1fr; }
+  .field input.openings { max-width: 100%; }
+}
+
+/* ---- 9. Sugestão de "melhor encaixe" (detalhe do candidato) ---- */
+.match-suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+/* Alto encaixe: leve destaque com o accent. */
+.match-suggestion.conf-high {
+  border-color: var(--accent-dim);
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+/* Encaixe médio: neutro suave. */
+.match-suggestion.conf-medium {
+  border-left-color: var(--accent-dim);
+}
+/* Possível encaixe: bem neutro, sem realce forte. */
+.match-suggestion.conf-low {
+  background: var(--surface);
+}
+
+.match-suggestion__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.match-suggestion__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.match-suggestion.conf-high .match-suggestion__label { color: var(--accent-dark); }
+.match-suggestion__estimate {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+.chip.match-conf {
+  color: var(--text-dim);
+  border-color: var(--border);
+  background: var(--surface);
+  margin: 0;
+}
+.match-suggestion.conf-high .chip.match-conf {
+  color: var(--accent-dark);
+  border-color: var(--accent-dim);
+}
+
+.match-suggestion__vaga {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 17px;
+}
+.match-suggestion__score {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.match-suggestion.conf-high .match-suggestion__score { color: var(--accent-dark); }
+
+.match-suggestion__skills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 14px;
+}
+.match-suggestion__skills-label { color: var(--text-dim); margin-right: 4px; }
+
+/* Aviso compacto de nota desatualizada (tema claro) */
+.stale-note {
+  background: #fdf4e3;
+  border: 1px solid var(--medium);
+  color: #7c4a02;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.reevaluate-hint { font-size: 13px; }
+
+.match-suggestion__action { margin-top: 2px; }
+.match-suggestion__here {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--strong);
+}
+
+/* ---- Comparar com outras vagas (sob demanda) ---- */
+.compare-block { margin: 14px 0 4px; }
+
+.compare-error {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--medium);
+  background: #fdf4e3;
+  color: #7c4a02;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.compare-results {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.compare-results__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.compare-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+.compare-row.is-best {
+  border-color: var(--accent-dim);
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+.compare-row.has-error {
+  background: var(--surface);
+  border-left-color: var(--weak);
+}
+
+.compare-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.compare-row__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 16px;
+}
+.compare-row__meta { font-size: 14px; color: var(--text-dim); }
+.compare-row__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 14px;
+}
+.compare-row__err { font-size: 14px; color: var(--weak); }

@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# secrets & local environment (never commit real keys / company data)
+.env
+server/.env
+
+# runtime data (candidates, vagas, processed emails — personal/company data)
+server/data/
+server/uploads/
+
+# sample resumes (not distributed)
+samples/
+
+# internal process docs & local tooling config
+docs/
+.claude/
+
+# logs, OS & editor files
+*.log
+.DS_Store
+.vscode/
+.idea/
